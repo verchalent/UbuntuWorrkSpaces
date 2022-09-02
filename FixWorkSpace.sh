@@ -34,27 +34,31 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docke
 apt update -y && apt upgrade -y
 
 packagelist=(
-# Gnome Tools
-gnome-shell-extension-manager 
-gnome-tweaks
-# Flatpak Support
-flatpak 
-gnome-software-plugin-flatpak
-# Appimage support
-libfuse2
-# Useful Utils
-vim
-zsh
-#adsys needs sssd
-# Codecs and Fonts
-ubuntu-restricted-extras
-# Docker Support
-docker-ce 
-docker-ce-cli 
-containerd.io
+    # Gnome Tools
+    gnome-shell-extension-manager 
+    gnome-tweaks
+    # Flatpak Support
+    flatpak 
+    gnome-software-plugin-flatpak
+    # Appimage support
+    libfuse2
+    # Useful Utils
+    vim
+    zsh
+    #adsys needs sssd
+    # Codecs and Fonts
+    ubuntu-restricted-extras
+    # Docker Support
+    docker-ce 
+    docker-ce-cli 
+    containerd.io
 )
 
 apt install -y ${packagelist[@]}
 
 # Flatpak
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
+# Gnome
+# Switch to Location bar. Allows user edit/input in path
+dconf write /org/gnome/nautilus/preferences/always-use-location-entry true
