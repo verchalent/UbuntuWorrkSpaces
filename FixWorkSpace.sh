@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
+DEBIAN_FRONTEND=noninteractive
 
 # Ensure script running elevated
+if [ $(id -u) -ne 0 ]
+  then echo "This script must be run with sudo"
+  exit
+fi
 
 # Temp fix for wks/gnome escilation bug
 mv /etc/polkit-1/localauthority.conf.d/01-ws-admin-user.conf /etc/polkit-1/localauthority.conf.d/zz-ws-admin-user.conf
-
-# Update
-apt update -y && apt upgrade -y
 
 # Switch to Apt for Firefox
 # - Allows Gnome Extension install to work again
@@ -24,18 +26,32 @@ Pin-Priority: 1001
 
 echo 'Unattended-Upgrade::Allowed-Origins:: "LP-PPA-mozillateam:${distro_codename}";' | tee /etc/apt/apt.conf.d/51unattended-upgrades-firefox
 
+# Add Docker CE repo
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+# Update
+apt update -y && apt upgrade -y
+
 packagelist=(
-# Gnome
+# Gnome Tools
 gnome-shell-extension-manager 
 gnome-tweaks
-
-#Flatpak
+# Flatpak Support
 flatpak 
 gnome-software-plugin-flatpak
-
-#Utils
+# Appimage support
+libfuse2
+# Useful Utils
 vim
+zsh
 #adsys needs sssd
+# Codecs and Fonts
+ubuntu-restricted-extras
+# Docker Support
+docker-ce 
+docker-ce-cli 
+containerd.io
 )
 
 apt install -y ${packagelist[@]}
