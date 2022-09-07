@@ -1,4 +1,12 @@
 #!/usr/bin/env bash
+
+#NOTES:
+# - Kernel update asking for ok
+# - EULA for codecs still promptes
+#
+#
+#
+NEEDRESTART_MODE=a
 DEBIAN_FRONTEND=noninteractive
 
 # Ensure script running elevated
@@ -9,6 +17,11 @@ fi
 
 # Temp fix for wks/gnome escilation bug
 mv /etc/polkit-1/localauthority.conf.d/01-ws-admin-user.conf /etc/polkit-1/localauthority.conf.d/zz-ws-admin-user.conf
+
+# Fix for kde escilation bug - just in case
+echo'
+[super-user-command]
+super-user-command=su'|tee /etc/xdg/kdesurc
 
 # Switch to Apt for Firefox
 # - Allows Gnome Extension install to work again
@@ -62,3 +75,6 @@ flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flat
 # Gnome
 # Switch to Location bar. Allows user edit/input in path
 dconf write /org/gnome/nautilus/preferences/always-use-location-entry true
+
+# Cleanup
+apt autoremove -y
