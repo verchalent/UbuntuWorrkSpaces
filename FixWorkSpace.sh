@@ -15,11 +15,11 @@ if [ $(id -u) -ne 0 ]
   exit
 fi
 
-# Temp fix for wks/gnome escilation bug
-mv /etc/polkit-1/localauthority.conf.d/01-ws-admin-user.conf /etc/polkit-1/localauthority.conf.d/zz-ws-admin-user.conf
+# Temp fix for wks/gnome escilation bug - No longer needed in 9/21 image
+#mv /etc/polkit-1/localauthority.conf.d/01-ws-admin-user.conf /etc/polkit-1/localauthority.conf.d/zz-ws-admin-user.conf
 
 # Fix for kde escilation bug - just in case
-echo'
+echo '
 [super-user-command]
 super-user-command=su'|tee /etc/xdg/kdesurc
 
@@ -58,7 +58,7 @@ packagelist=(
     # Useful Utils
     vim
     zsh
-    #adsys needs sssd
+    adsys
     # Codecs and Fonts
     ubuntu-restricted-extras
     # Docker Support
