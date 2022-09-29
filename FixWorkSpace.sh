@@ -1,23 +1,13 @@
 #!/usr/bin/env bash
 
-#NOTES:
-# - Kernel update asking for ok
-# - EULA for codecs still promptes
-#
-#
-#
-NEEDRESTART_MODE=a
-DEBIAN_FRONTEND=noninteractive
-
 # Ensure script running elevated
 if [ $(id -u) -ne 0 ]
-  then echo "This script must be run with sudo"
+  then echo "This script must be run with elevated rights"
   exit
 fi
 
-# Temp fix for wks/gnome escilation bug - No longer needed in 9/21 image
-#mv /etc/polkit-1/localauthority.conf.d/01-ws-admin-user.conf /etc/polkit-1/localauthority.conf.d/zz-ws-admin-user.conf
-
+export NEEDRESTART_MODE=a
+export DEBIAN_FRONTEND=noninteractive
 # Fix for kde escilation bug - just in case
 echo '
 [super-user-command]
@@ -67,7 +57,7 @@ packagelist=(
     containerd.io
 )
 
-apt install -y ${packagelist[@]}
+DEBIAN_FRONTEND=noninteractive apt install -y ${packagelist[@]}
 
 # Flatpak
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
