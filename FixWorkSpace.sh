@@ -8,6 +8,7 @@ fi
 
 export NEEDRESTART_MODE=a
 export DEBIAN_FRONTEND=noninteractive
+
 # Fix for kde escilation bug - just in case
 echo '
 [super-user-command]
