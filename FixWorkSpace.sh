@@ -69,3 +69,5 @@ dconf write /org/gnome/nautilus/preferences/always-use-location-entry true
 
 # Cleanup
 apt autoremove -y
+
+echo "Please reeboot to apply changes"
